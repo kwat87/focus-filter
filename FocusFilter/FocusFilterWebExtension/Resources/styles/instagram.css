@@ -1,0 +1,4 @@
+a[href*="/reels"],
+a[href*="/reel/"],
+[aria-label="Reels"],
+div[data-testid="reels-tray"] { display: none !important }

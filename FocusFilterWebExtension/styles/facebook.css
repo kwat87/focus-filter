@@ -1,0 +1,26 @@
+/* Nav links - hidden everywhere */
+a[href*="/watch"],
+a[href*="/reel/"],
+a[href*="/reels"],
+a[href*="/share/v/"],
+a[href*="/share/r/"],
+[aria-label="Watch"],
+[aria-label="Reels"] { display: none !important }
+
+/* Dedicated pages */
+div[data-pagelet="WatchFeed"],
+div[data-pagelet*="Reel"],
+div[aria-label="Reels"] { display: none !important }
+
+/* Feed posts containing blocked links - hidden everywhere */
+div[data-pagelet^="FeedUnit"]:has(a[href*="/reel/"]),
+div[data-pagelet^="FeedUnit"]:has(a[href*="/watch"]),
+div[data-pagelet^="FeedUnit"]:has(a[href*="/share/v/"]),
+div[data-pagelet^="FeedUnit"]:has(a[href*="/share/r/"]),
+div[data-pagelet^="FeedUnit"]:has([aria-label="Reels"]) { display: none !important }
+
+div[role="article"]:has(a[href*="/reel/"]),
+div[role="article"]:has(a[href*="/watch"]),
+div[role="article"]:has(a[href*="/share/v/"]),
+div[role="article"]:has(a[href*="/share/r/"]),
+div[role="article"]:has([aria-label="Reels"]) { display: none !important }

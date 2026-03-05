@@ -1,0 +1,21 @@
+/* Desktop YouTube */
+ytd-reel-shelf-renderer,
+ytd-rich-section-renderer[is-shorts],
+ytd-reel-item-renderer,
+ytd-rich-shelf-renderer[is-shorts],
+ytd-reel-video-renderer,
+a[href*="/shorts/"],
+ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"] { display: none !important }
+
+ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+ytd-guide-entry-renderer a[title="Shorts"],
+tp-yt-paper-item:has(> [title="Shorts"]),
+a[title="Shorts"] { display: none !important }
+
+yt-chip-cloud-chip-renderer:has(a[href*="/shorts"]) { display: none !important }
+
+/* Mobile YouTube */
+ytm-reel-shelf-renderer,
+ytm-shorts-lockup-view-model,
+ytm-pivot-bar-item-renderer:has(a[href*="/shorts"]),
+.reel-shelf-items { display: none !important }

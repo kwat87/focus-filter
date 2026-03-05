@@ -1,0 +1,111 @@
+[
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*youtube\\.com/shorts",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": {
+            "type": "css-display-none",
+            "selector": "ytd-reel-shelf-renderer, ytd-rich-section-renderer[is-shorts], ytd-reel-item-renderer, ytd-rich-shelf-renderer[is-shorts], ytd-reel-video-renderer, a[href*='/shorts/'], ytd-mini-guide-entry-renderer[aria-label='Shorts'], ytd-guide-entry-renderer:has(a[title='Shorts']), a[title='Shorts'], ytd-thumbnail-overlay-time-status-renderer[overlay-style='SHORTS']"
+        },
+        "trigger": { "url-filter": ".*youtube\\.com" }
+    },
+    {
+        "action": {
+            "type": "css-display-none",
+            "selector": "ytm-reel-shelf-renderer, ytm-shorts-lockup-view-model, a[href*='/shorts/'], .reel-shelf-items, ytm-pivot-bar-item-renderer:has(a[href*='/shorts'])"
+        },
+        "trigger": { "url-filter": ".*m\\.youtube\\.com" }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*instagram\\.com/reels",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*instagram\\.com/reel",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": {
+            "type": "css-display-none",
+            "selector": "a[href*='/reels'], a[href*='/reel/'], div[data-testid='reels-tray'], [aria-label='Reels']"
+        },
+        "trigger": { "url-filter": ".*instagram\\.com" }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*facebook\\.com/reel",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*facebook\\.com/reels",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*facebook\\.com/watch",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*facebook\\.com/share/[vr]/",
+            "load-type": ["first-party", "third-party"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*video.*fbcdn\\.net",
+            "resource-type": ["media"],
+            "load-type": ["third-party"],
+            "if-domain": ["*facebook.com"]
+        }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*\\.mp4",
+            "resource-type": ["media"],
+            "load-type": ["third-party"],
+            "if-domain": ["*facebook.com"]
+        }
+    },
+    {
+        "action": {
+            "type": "css-display-none",
+            "selector": "a[href*='/watch'], a[href*='/reel/'], a[href*='/reels'], a[href*='/share/v/'], a[href*='/share/r/'], div[data-pagelet='WatchFeed'], div[aria-label='Reels'], [aria-label='Watch'], div[data-pagelet^='FeedUnit']:has(a[href*='/reel/']), div[data-pagelet^='FeedUnit']:has(a[href*='/watch']), div[data-pagelet^='FeedUnit']:has([aria-label='Reels']), div[data-pagelet^='FeedUnit']:has(video), div[role='article']:has(video), div[role='article']:has(a[href*='/reel/']), div[role='article']:has(a[href*='/watch']), div[role='article']:has(a[href*='/share/v/']), div[role='article']:has(a[href*='/share/r/'])"
+        },
+        "trigger": { "url-filter": ".*facebook\\.com" }
+    },
+    {
+        "action": {
+            "type": "css-display-none",
+            "selector": "video, div:has(> video), [data-type='vod'], [data-store*='video'], a[href*='/reel/'], a[href*='/reels'], a[href*='/watch'], a[href*='/share/v/'], a[href*='/share/r/'], [aria-label='Reels'], [aria-label='Watch']"
+        },
+        "trigger": { "url-filter": ".*m\\.facebook\\.com" }
+    },
+    {
+        "action": { "type": "block" },
+        "trigger": {
+            "url-filter": ".*tiktok\\.com",
+            "load-type": ["first-party", "third-party"]
+        }
+    }
+]

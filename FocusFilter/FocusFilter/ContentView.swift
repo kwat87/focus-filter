@@ -2,7 +2,8 @@ import SwiftUI
 import SafariServices
 
 struct ContentView: View {
-    @State private var extensionEnabled = false
+    @State private var blockerEnabled = false
+    @State private var webExtensionEnabled = false
     @State private var checkingStatus = false
 
     var body: some View {
@@ -33,29 +34,48 @@ struct ContentView: View {
     }
 
     private var statusSection: some View {
+        VStack(spacing: 12) {
+            statusRow(
+                enabled: blockerEnabled,
+                activeText: "Content Blocker Active",
+                inactiveText: "Content Blocker Not Enabled",
+                detail: "Blocks page loads and hides video elements via CSS."
+            )
+            statusRow(
+                enabled: webExtensionEnabled,
+                activeText: "Web Extension Active",
+                inactiveText: "Web Extension Not Enabled",
+                detail: "Intercepts in-app navigation and removes video posts dynamically."
+            )
+            HStack {
+                Spacer()
+                Button {
+                    checkExtensionStatus()
+                } label: {
+                    Label("Refresh", systemImage: "arrow.clockwise")
+                        .font(.caption)
+                }
+                .disabled(checkingStatus)
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func statusRow(enabled: Bool, activeText: String, inactiveText: String, detail: String) -> some View {
         HStack(spacing: 12) {
-            Image(systemName: extensionEnabled ? "checkmark.circle.fill" : "xmark.circle.fill")
+            Image(systemName: enabled ? "checkmark.circle.fill" : "xmark.circle.fill")
                 .font(.title2)
-                .foregroundStyle(extensionEnabled ? .green : .red)
+                .foregroundStyle(enabled ? .green : .red)
             VStack(alignment: .leading, spacing: 2) {
-                Text(extensionEnabled ? "Content Blocker Active" : "Content Blocker Not Enabled")
+                Text(enabled ? activeText : inactiveText)
                     .font(.headline)
-                Text(extensionEnabled
-                     ? "Short-form video content is being blocked."
-                     : "Follow the steps below to enable blocking.")
+                Text(detail)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            Button {
-                checkExtensionStatus()
-            } label: {
-                Image(systemName: "arrow.clockwise")
-            }
-            .disabled(checkingStatus)
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
     }
 
     private var setupInstructionsSection: some View {
@@ -122,13 +142,31 @@ struct ContentView: View {
     private func checkExtensionStatus() {
         checkingStatus = true
         #if os(iOS)
+        let bundleId = Bundle.main.bundleIdentifier!
+        let group = DispatchGroup()
+
+        group.enter()
         SFContentBlockerManager.getStateOfContentBlocker(
-            withIdentifier: Bundle.main.bundleIdentifier! + ".FocusFilterBlocker"
-        ) { state, error in
+            withIdentifier: bundleId + ".FocusFilterBlocker"
+        ) { state, _ in
             DispatchQueue.main.async {
-                extensionEnabled = state?.isEnabled ?? false
-                checkingStatus = false
+                blockerEnabled = state?.isEnabled ?? false
+                group.leave()
             }
+        }
+
+        group.enter()
+        SFSafariExtensionManager.getStateOfSafariExtension(
+            withIdentifier: bundleId + ".FocusFilterWebExtension"
+        ) { state, _ in
+            DispatchQueue.main.async {
+                webExtensionEnabled = state?.isEnabled ?? false
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            checkingStatus = false
         }
         #else
         checkingStatus = false

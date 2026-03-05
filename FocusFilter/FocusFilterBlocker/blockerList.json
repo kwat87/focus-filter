@@ -83,7 +83,8 @@
             "url-filter": ".*video.*fbcdn\\.net",
             "resource-type": ["media"],
             "load-type": ["third-party"],
-            "if-domain": ["*facebook.com"]
+            "if-domain": ["*facebook.com"],
+            "unless-top-url": [".*facebook\\.com/marketplace"]
         }
     },
     {
@@ -92,7 +93,8 @@
             "url-filter": ".*\\.mp4",
             "resource-type": ["media"],
             "load-type": ["third-party"],
-            "if-domain": ["*facebook.com"]
+            "if-domain": ["*facebook.com"],
+            "unless-top-url": [".*facebook\\.com/marketplace"]
         }
     },
     {
@@ -100,14 +102,20 @@
             "type": "css-display-none",
             "selector": "a[href*='/watch'], a[href*='/reel/'], a[href*='/reels'], a[href*='/share/v/'], a[href*='/share/r/'], a[href*='/videos/'], div[data-pagelet='WatchFeed'], div[aria-label='Reels'], [aria-label='Watch'], div[data-pagelet^='FeedUnit']:has(a[href*='/reel/']), div[data-pagelet^='FeedUnit']:has(a[href*='/watch']), div[data-pagelet^='FeedUnit']:has(a[href*='/videos/']), div[data-pagelet^='FeedUnit']:has([aria-label='Reels']), div[data-pagelet^='FeedUnit']:has(video), div[role='article']:has(video), div[role='article']:has(a[href*='/reel/']), div[role='article']:has(a[href*='/watch']), div[role='article']:has(a[href*='/videos/']), div[role='article']:has(a[href*='/share/v/']), div[role='article']:has(a[href*='/share/r/'])"
         },
-        "trigger": { "url-filter": ".*facebook\\.com" }
+        "trigger": {
+            "url-filter": ".*facebook\\.com",
+            "unless-top-url": [".*facebook\\.com/marketplace"]
+        }
     },
     {
         "action": {
             "type": "css-display-none",
             "selector": "video, div:has(> video), [data-type='vod'], [data-store*='video'], a[href*='/reel/'], a[href*='/reels'], a[href*='/watch'], a[href*='/videos/'], a[href*='/share/v/'], a[href*='/share/r/'], [aria-label='Reels'], [aria-label='Watch']"
         },
-        "trigger": { "url-filter": ".*m\\.facebook\\.com" }
+        "trigger": {
+            "url-filter": ".*m\\.facebook\\.com",
+            "unless-top-url": [".*facebook\\.com/marketplace"]
+        }
     },
     {
         "action": { "type": "block" },

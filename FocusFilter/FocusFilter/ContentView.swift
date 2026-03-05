@@ -41,12 +41,28 @@ struct ContentView: View {
                 inactiveText: "Content Blocker Not Enabled",
                 detail: "Blocks page loads and hides video elements via CSS."
             )
+            #if os(macOS)
             statusRow(
                 enabled: webExtensionEnabled,
                 activeText: "Web Extension Active",
                 inactiveText: "Web Extension Not Enabled",
                 detail: "Intercepts in-app navigation and removes video posts dynamically."
             )
+            #else
+            HStack(spacing: 12) {
+                Image(systemName: "info.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(.blue)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Web Extension")
+                        .font(.headline)
+                    Text("Check Settings → Apps → Safari → Extensions to verify it's enabled.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+            }
+            #endif
             HStack {
                 Spacer()
                 Button {
@@ -141,8 +157,18 @@ struct ContentView: View {
 
     private func checkExtensionStatus() {
         checkingStatus = true
-        #if os(iOS)
         let bundleId = Bundle.main.bundleIdentifier!
+
+        #if os(iOS)
+        SFContentBlockerManager.getStateOfContentBlocker(
+            withIdentifier: bundleId + ".FocusFilterBlocker"
+        ) { state, _ in
+            DispatchQueue.main.async {
+                blockerEnabled = state?.isEnabled ?? false
+                checkingStatus = false
+            }
+        }
+        #elseif os(macOS)
         let group = DispatchGroup()
 
         group.enter()
@@ -168,8 +194,6 @@ struct ContentView: View {
         group.notify(queue: .main) {
             checkingStatus = false
         }
-        #else
-        checkingStatus = false
         #endif
     }
 }

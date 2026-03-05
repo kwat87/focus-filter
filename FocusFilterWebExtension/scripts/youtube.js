@@ -13,13 +13,22 @@
   ];
   const SELECTOR = SHORTS_SELECTORS.join(",");
 
+  let isShowingBlockedPage = false;
+
   function showBlockedPage() {
-    document.title = "Blocked by FocusFilter";
-    document.body.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
-      '<div style="text-align:center"><h2>YouTube Shorts blocked</h2>' +
-      '<p>Blocked by FocusFilter</p>' +
-      '<a href="https://www.youtube.com" style="color:#065fd4">Go to YouTube home</a></div></div>';
+    if (isShowingBlockedPage) return;
+    isShowingBlockedPage = true;
+    observer && observer.disconnect();
+    function doBlock() {
+      document.title = "Blocked by FocusFilter";
+      document.body.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
+        '<div style="text-align:center"><h2>YouTube Shorts blocked</h2>' +
+        '<p>Blocked by FocusFilter</p>' +
+        '<button onclick="window.location.replace(\'https://www.youtube.com\')" style="color:#065fd4;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to YouTube home</button></div></div>';
+    }
+    if (document.body) doBlock();
+    else document.addEventListener("DOMContentLoaded", doBlock);
   }
 
   function handleNavigation() {
@@ -30,24 +39,38 @@
     return false;
   }
 
-  function removeShortsElements() {
+  function hideShortsElements() {
     for (const el of document.querySelectorAll(SELECTOR)) {
-      el.remove();
+      if (!el.classList.contains("ff-hidden")) {
+        el.style.setProperty("display", "none", "important");
+        el.classList.add("ff-hidden");
+      }
     }
   }
 
-  if (handleNavigation()) return;
+  if (location.pathname.startsWith("/shorts")) {
+    try { window.stop(); } catch (_) {}
+    showBlockedPage();
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!isShowingBlockedPage) showBlockedPage();
+      else if (document.body && !document.body.querySelector("button")) {
+        isShowingBlockedPage = false;
+        showBlockedPage();
+      }
+    });
+    return;
+  }
 
   let debounceTimer;
   const observer = new MutationObserver(() => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      if (!handleNavigation()) removeShortsElements();
+      if (!handleNavigation()) hideShortsElements();
     }, 100);
   });
 
   function start() {
-    removeShortsElements();
+    hideShortsElements();
     observer.observe(document.body, { childList: true, subtree: true });
   }
 

@@ -25,14 +25,19 @@
     return BLOCKED_PATHS.some(p => pathname.startsWith(p));
   }
 
+  let isShowingBlockedPage = false;
+
   function showBlockedPage() {
+    if (isShowingBlockedPage) return;
+    isShowingBlockedPage = true;
+    observer && observer.disconnect();
     function doBlock() {
       document.title = "Blocked by FocusFilter";
       document.body.innerHTML =
         '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
         '<div style="text-align:center"><h2>Facebook Watch/Reels blocked</h2>' +
         '<p>Blocked by FocusFilter</p>' +
-        '<a href="https://www.facebook.com" style="color:#1877f2">Go to Facebook home</a></div></div>';
+        '<button onclick="window.location.replace(\'https://www.facebook.com\')" style="color:#1877f2;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to Facebook home</button></div></div>';
     }
     if (document.body) {
       doBlock();
@@ -116,24 +121,30 @@
     return FEED_PATHS.includes(p) || p === "";
   }
 
+  const HIDDEN = "ff-hidden";
+  function hide(el) {
+    if (!el.classList.contains(HIDDEN)) {
+      el.style.setProperty("display", "none", "important");
+      el.classList.add(HIDDEN);
+    }
+  }
+
   function removeElements() {
     for (const el of document.querySelectorAll(NAV_SELECTOR)) {
-      el.remove();
+      hide(el);
     }
 
     for (const link of document.querySelectorAll(
       'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"], a[href*="/videos/"]'
     )) {
       const post = findPostContainer(link);
-      if (post) post.remove();
-      else link.remove();
+      hide(post || link);
     }
 
     if (isOnFeed()) {
       for (const video of document.querySelectorAll("video")) {
         const post = findPostContainer(video);
-        if (post) post.remove();
-        else video.remove();
+        hide(post || video);
       }
     }
   }
@@ -171,9 +182,17 @@
 
   // Immediate check before body exists - block as early as possible
   if (isBlockedPath(location.pathname)) {
-    // Stop page from rendering by clearing the document immediately
+    try { window.stop(); } catch (_) {}
     try { document.documentElement.innerHTML = ""; } catch (_) {}
     showBlockedPage();
+    // Also handle the case where window.stop didn't fully work
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!isShowingBlockedPage) showBlockedPage();
+      else if (document.body && !document.body.querySelector("button")) {
+        isShowingBlockedPage = false;
+        showBlockedPage();
+      }
+    });
     return;
   }
 

@@ -1,7 +1,8 @@
 "use strict";
 (() => {
-  const BLOCKED_PATHS = ["/watch", "/reel/", "/reels", "/share/v/", "/share/r/"];
-  const BLOCKED_LINK_RE = /\/(reel\/|watch|reels|share\/[vr]\/)/;
+  const BLOCKED_PATHS = ["/watch", "/reel/", "/reel", "/reels", "/share/v/", "/share/r/"];
+  const VIDEOS_RE = /\/videos\//;
+  const BLOCKED_LINK_RE = /\/(reel\/|reel$|watch|reels|share\/[vr]\/|videos\/)/;
 
   const NAV_SELECTORS = [
     'a[href*="/watch"]',
@@ -18,6 +19,8 @@
   const NAV_SELECTOR = NAV_SELECTORS.join(",");
 
   function isBlockedPath(pathname) {
+    if (pathname.startsWith("/marketplace")) return false;
+    if (VIDEOS_RE.test(pathname)) return true;
     return BLOCKED_PATHS.some(p => pathname.startsWith(p));
   }
 

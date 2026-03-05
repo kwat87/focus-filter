@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "FocusFilter",
+  "description": "Block short-form video content.",
+  "version": "1.0.0",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "css": ["youtube.css"],
+      "js": ["youtube.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "css": ["instagram.css"],
+      "js": ["instagram.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.facebook.com/*"],
+      "css": ["facebook.css"],
+      "js": ["facebook.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.tiktok.com/*"],
+      "css": ["tiktok.css"],
+      "js": ["tiktok.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

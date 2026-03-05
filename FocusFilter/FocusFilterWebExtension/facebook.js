@@ -1,7 +1,8 @@
 "use strict";
 (() => {
   const BLOCKED_PATHS = ["/watch", "/reel/", "/reel", "/reels", "/share/v/", "/share/r/"];
-  const BLOCKED_LINK_RE = /\/(reel\/|reel$|watch|reels|share\/[vr]\/)/;
+  const VIDEOS_RE = /\/videos\//;
+  const BLOCKED_LINK_RE = /\/(reel\/|reel$|watch|reels|share\/[vr]\/|videos\/)/;
 
   const NAV_SELECTORS = [
     'a[href*="/watch"]',
@@ -9,6 +10,7 @@
     'a[href*="/reels"]',
     'a[href*="/share/v/"]',
     'a[href*="/share/r/"]',
+    'a[href*="/videos/"]',
     'div[data-pagelet="WatchFeed"]',
     'div[data-pagelet*="Reel"]',
     'div[aria-label="Reels"]',
@@ -18,16 +20,25 @@
   const NAV_SELECTOR = NAV_SELECTORS.join(",");
 
   function isBlockedPath(pathname) {
+    if (pathname.startsWith("/marketplace")) return false;
+    if (VIDEOS_RE.test(pathname)) return true;
     return BLOCKED_PATHS.some(p => pathname.startsWith(p));
   }
 
   function showBlockedPage() {
-    document.title = "Blocked by FocusFilter";
-    document.body.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
-      '<div style="text-align:center"><h2>Facebook Watch/Reels blocked</h2>' +
-      '<p>Blocked by FocusFilter</p>' +
-      '<a href="https://www.facebook.com" style="color:#1877f2">Go to Facebook home</a></div></div>';
+    function doBlock() {
+      document.title = "Blocked by FocusFilter";
+      document.body.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
+        '<div style="text-align:center"><h2>Facebook Watch/Reels blocked</h2>' +
+        '<p>Blocked by FocusFilter</p>' +
+        '<a href="https://www.facebook.com" style="color:#1877f2">Go to Facebook home</a></div></div>';
+    }
+    if (document.body) {
+      doBlock();
+    } else {
+      document.addEventListener("DOMContentLoaded", doBlock);
+    }
   }
 
   function handleNavigation() {
@@ -48,6 +59,8 @@
       function isBlocked(url) {
         try {
           var p = new URL(url, location.origin).pathname;
+          if (p.startsWith("/marketplace")) return false;
+          if (/\/videos\//.test(p)) return true;
           return blocked.some(function(b) { return p.startsWith(b); });
         } catch(e) { return false; }
       }
@@ -109,7 +122,7 @@
     }
 
     for (const link of document.querySelectorAll(
-      'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"]'
+      'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"], a[href*="/videos/"]'
     )) {
       const post = findPostContainer(link);
       if (post) post.remove();
@@ -156,7 +169,13 @@
   // Inject the main-world pushState interception
   try { injectMainWorldScript(); } catch (_) {}
 
-  if (handleNavigation()) return;
+  // Immediate check before body exists - block as early as possible
+  if (isBlockedPath(location.pathname)) {
+    // Stop page from rendering by clearing the document immediately
+    try { document.documentElement.innerHTML = ""; } catch (_) {}
+    showBlockedPage();
+    return;
+  }
 
   let debounceTimer;
   const observer = new MutationObserver(() => {

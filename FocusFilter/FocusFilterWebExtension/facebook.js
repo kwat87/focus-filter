@@ -37,7 +37,10 @@
         '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
         '<div style="text-align:center"><h2>Facebook Watch/Reels blocked</h2>' +
         '<p>Blocked by FocusFilter</p>' +
-        '<button onclick="window.location.replace(\'https://www.facebook.com\')" style="color:#1877f2;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to Facebook home</button></div></div>';
+        '<button id="ff-home" style="color:#1877f2;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to Facebook home</button></div></div>';
+      document.getElementById("ff-home").addEventListener("click", () => {
+        window.location.replace("https://www.facebook.com");
+      });
     }
     if (document.body) {
       doBlock();
@@ -188,7 +191,7 @@
     // Also handle the case where window.stop didn't fully work
     document.addEventListener("DOMContentLoaded", () => {
       if (!isShowingBlockedPage) showBlockedPage();
-      else if (document.body && !document.body.querySelector("button")) {
+      else if (document.body && !document.getElementById("ff-home")) {
         isShowingBlockedPage = false;
         showBlockedPage();
       }

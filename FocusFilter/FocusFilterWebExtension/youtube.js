@@ -25,7 +25,10 @@
         '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui;color:#666">' +
         '<div style="text-align:center"><h2>YouTube Shorts blocked</h2>' +
         '<p>Blocked by FocusFilter</p>' +
-        '<button onclick="window.location.replace(\'https://www.youtube.com\')" style="color:#065fd4;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to YouTube home</button></div></div>';
+        '<button id="ff-home" style="color:#065fd4;background:none;border:none;cursor:pointer;font-size:16px;text-decoration:underline">Go to YouTube home</button></div></div>';
+      document.getElementById("ff-home").addEventListener("click", () => {
+        window.location.replace("https://www.youtube.com");
+      });
     }
     if (document.body) doBlock();
     else document.addEventListener("DOMContentLoaded", doBlock);
@@ -53,7 +56,7 @@
     showBlockedPage();
     document.addEventListener("DOMContentLoaded", () => {
       if (!isShowingBlockedPage) showBlockedPage();
-      else if (document.body && !document.body.querySelector("button")) {
+      else if (document.body && !document.getElementById("ff-home")) {
         isShowingBlockedPage = false;
         showBlockedPage();
       }

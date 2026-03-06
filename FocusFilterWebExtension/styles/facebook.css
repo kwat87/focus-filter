@@ -1,26 +1,29 @@
-/* Nav links - hidden everywhere */
-a[href*="/watch"],
-a[href*="/reel/"],
-a[href*="/reels"],
-a[href*="/share/v/"],
-a[href*="/share/r/"],
-[aria-label="Watch"],
-[aria-label="Reels"] { display: none !important }
+/* All rules scoped to body.ff-active so they don't apply on marketplace */
+/* The ff-active class is added by facebook.js on non-marketplace pages */
+
+/* Nav links */
+body.ff-active a[href*="/watch"],
+body.ff-active a[href*="/reel/"],
+body.ff-active a[href*="/reels"],
+body.ff-active a[href*="/share/v/"],
+body.ff-active a[href*="/share/r/"],
+body.ff-active [aria-label="Watch"],
+body.ff-active [aria-label="Reels"] { display: none !important }
 
 /* Dedicated pages */
-div[data-pagelet="WatchFeed"],
-div[data-pagelet*="Reel"],
-div[aria-label="Reels"] { display: none !important }
+body.ff-active div[data-pagelet="WatchFeed"],
+body.ff-active div[data-pagelet*="Reel"],
+body.ff-active div[aria-label="Reels"] { display: none !important }
 
-/* Feed posts containing blocked links - hidden everywhere */
-div[data-pagelet^="FeedUnit"]:has(a[href*="/reel/"]),
-div[data-pagelet^="FeedUnit"]:has(a[href*="/watch"]),
-div[data-pagelet^="FeedUnit"]:has(a[href*="/share/v/"]),
-div[data-pagelet^="FeedUnit"]:has(a[href*="/share/r/"]),
-div[data-pagelet^="FeedUnit"]:has([aria-label="Reels"]) { display: none !important }
+/* Feed posts containing blocked links */
+body.ff-active div[data-pagelet^="FeedUnit"]:has(a[href*="/reel/"]),
+body.ff-active div[data-pagelet^="FeedUnit"]:has(a[href*="/watch"]),
+body.ff-active div[data-pagelet^="FeedUnit"]:has(a[href*="/share/v/"]),
+body.ff-active div[data-pagelet^="FeedUnit"]:has(a[href*="/share/r/"]),
+body.ff-active div[data-pagelet^="FeedUnit"]:has([aria-label="Reels"]) { display: none !important }
 
-div[role="article"]:has(a[href*="/reel/"]),
-div[role="article"]:has(a[href*="/watch"]),
-div[role="article"]:has(a[href*="/share/v/"]),
-div[role="article"]:has(a[href*="/share/r/"]),
-div[role="article"]:has([aria-label="Reels"]) { display: none !important }
+body.ff-active div[role="article"]:has(a[href*="/reel/"]),
+body.ff-active div[role="article"]:has(a[href*="/watch"]),
+body.ff-active div[role="article"]:has(a[href*="/share/v/"]),
+body.ff-active div[role="article"]:has(a[href*="/share/r/"]),
+body.ff-active div[role="article"]:has([aria-label="Reels"]) { display: none !important }

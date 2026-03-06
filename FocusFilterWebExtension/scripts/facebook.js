@@ -103,7 +103,13 @@
     }
   }
 
+  function isOnMarketplace() {
+    return location.pathname.startsWith("/marketplace");
+  }
+
   function removeElements() {
+    if (isOnMarketplace()) return;
+
     for (const el of document.querySelectorAll(NAV_SELECTOR)) {
       hide(el);
     }
@@ -174,6 +180,7 @@
   });
 
   function start() {
+    if (!isOnMarketplace()) document.body.classList.add("ff-active");
     removeElements();
     observer.observe(document.body, { childList: true, subtree: true });
   }

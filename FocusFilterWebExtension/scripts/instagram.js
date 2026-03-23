@@ -42,12 +42,15 @@
   }
 
   function hideReelsElements() {
-    for (const el of document.querySelectorAll(SELECTOR)) {
-      if (!el.classList.contains("ff-hidden")) {
-        el.style.setProperty("display", "none", "important");
-        el.classList.add("ff-hidden");
-      }
-    }
+    // The static CSS content script already hides reels elements.
+    // Inject a dynamic style tag once as a belt-and-suspenders fallback
+    // for elements the static CSS might miss. Per-element inline styles
+    // create a MutationObserver feedback loop with React.
+    if (document.getElementById("ff-reels-style")) return;
+    const style = document.createElement("style");
+    style.id = "ff-reels-style";
+    style.textContent = SELECTOR + "{display:none!important}";
+    (document.head || document.documentElement).appendChild(style);
   }
 
   if (isBlockedPath()) {

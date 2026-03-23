@@ -110,9 +110,10 @@
   function removeElements() {
     if (isOnMarketplace()) return;
 
-    for (const el of document.querySelectorAll(NAV_SELECTOR)) {
-      hide(el);
-    }
+    // Nav elements (Watch/Reels links, pagelets, aria labels) are hidden
+    // purely by CSS (body.ff-active scoped rules). Applying inline styles
+    // via JS creates a MutationObserver feedback loop with React, causing
+    // elements like the profile "Reels" tab to flash repeatedly.
 
     for (const link of document.querySelectorAll(
       'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"]'

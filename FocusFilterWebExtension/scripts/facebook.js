@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  const BLOCKED_PATHS = ["/watch", "/reel/", "/reel", "/reels", "/share/v/", "/share/r/"];
+  const BLOCKED_PATHS = ["/watch", "/reel/", "/reel", "/reels", "/share/v/", "/share/r/", "/story.php", "/video"];
   const VIDEOS_RE = /\/videos\//;
   const BLOCKED_LINK_RE = /\/(reel\/|reel$|watch|reels|share\/[vr]\/|videos\/)/;
 
@@ -10,6 +10,9 @@
     'a[href*="/reels"]',
     'a[href*="/share/v/"]',
     'a[href*="/share/r/"]',
+    'a[href*="/videos/"]',
+    'a[href*="/video/"]',
+    'a[href*="/story.php"]',
     'div[data-pagelet="WatchFeed"]',
     'div[data-pagelet*="Reel"]',
     'div[aria-label="Reels"]',
@@ -116,7 +119,7 @@
     // elements like the profile "Reels" tab to flash repeatedly.
 
     for (const link of document.querySelectorAll(
-      'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"]'
+      'a[href*="/share/v/"], a[href*="/share/r/"], a[href*="/reel/"], a[href*="/watch"], a[href*="/videos/"], a[href*="/video/"], a[href*="/story.php"]'
     )) {
       const post = findPostContainer(link);
       hide(post || link);

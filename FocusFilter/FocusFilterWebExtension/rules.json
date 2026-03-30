@@ -10,5 +10,6 @@
   {"id": 9, "priority": 1, "action": {"type": "block"}, "condition": {"urlFilter": "||facebook.com/share/r/", "resourceTypes": ["main_frame", "sub_frame"]}},
   {"id": 11, "priority": 1, "action": {"type": "block"}, "condition": {"urlFilter": "||facebook.com/*/videos/", "resourceTypes": ["main_frame", "sub_frame"]}},
   {"id": 12, "priority": 1, "action": {"type": "block"}, "condition": {"urlFilter": "||facebook.com/video", "resourceTypes": ["main_frame", "sub_frame"]}},
+  {"id": 13, "priority": 1, "action": {"type": "block"}, "condition": {"urlFilter": "||facebook.com/story.php", "resourceTypes": ["main_frame", "sub_frame"]}},
   {"id": 10, "priority": 1, "action": {"type": "block"}, "condition": {"urlFilter": "||tiktok.com", "resourceTypes": ["main_frame", "sub_frame"]}}
 ]
